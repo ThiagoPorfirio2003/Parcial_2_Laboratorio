@@ -3,7 +3,7 @@
 #ifndef CONTROLLER_H_
 #define CONTROLLER_H_
 
-int Controller_loadFromText(LinkedList* this, int mostrarPasajero);
+int Controller_loadFromText(LinkedList* this);
 
 int Controller_ListServicios(LinkedList* this);
 

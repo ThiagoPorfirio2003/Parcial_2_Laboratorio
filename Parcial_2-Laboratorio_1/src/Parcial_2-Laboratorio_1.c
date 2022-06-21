@@ -16,10 +16,11 @@ int main(void) {
 	LinkedList* listaServicios;
 	int opcionMenu;
 	int banderaOpcionUno;
-	int banderaOpcionCuatro;
+	int opcionReCargarDatos;
 
 	banderaOpcionUno = 0;
-	banderaOpcionCuatro=0;
+	opcionReCargarDatos =0;
+
 	listaServicios = ll_newLinkedList();
 
 	do{
@@ -38,17 +39,17 @@ int main(void) {
 			switch(opcionMenu)
 			{
 				case 1:
-					if(!banderaOpcionUno || banderaOpcionCuatro)
+					if(banderaOpcionUno && !utn_GetIntRango(&opcionReCargarDatos, "\nSi queres volver a cargar los datos, todos los no guardados se perderan. Elije 1 para aceptar o 0 para cancelar: ", "El dato ingresado es invalido. Elije 1 para aceptar o 0 para cancelar:  ", 0, 1, 1))
 					{
-						if(banderaOpcionCuatro)
-						{
-							banderaOpcionCuatro = 0;
-							ll_clear(listaServicios);
-						}
-						switch(Controller_loadFromText(listaServicios, 1))
+						ll_clear(listaServicios);
+					}
+
+					if(opcionReCargarDatos || !banderaOpcionUno)
+					{
+						switch(Controller_loadFromText(listaServicios))
 						{
 							case 0:
-								printf("\n\nSe cargaron con exito todos los Servicios\n\n");
+								printf("\n\nSe cargaron con exito todos los Servicios");
 								banderaOpcionUno=1;
 								break;
 
@@ -57,14 +58,10 @@ int main(void) {
 								break;
 
 							case 2:
-								printf("\n\nNo se pudieron cargar algunos de los servicios\n\n");
+								printf("\n\nNo se pudieron cargar algunos de los servicios");
 								banderaOpcionUno=1;
 								break;
 						}
-					}
-					else
-					{
-						printf("\n\nNo se pueden cargar los servicios debido a que todavia no los volvieste a guardar");
 					}
 
 					break;
@@ -76,7 +73,6 @@ int main(void) {
 						{
 							case 0:
 								printf("\n\nSe mostraron con exito todos los Servicios");
-								banderaOpcionUno=1;
 								break;
 
 							case 1:
@@ -85,7 +81,6 @@ int main(void) {
 
 							case 2:
 								printf("\n\nNo se pudieron mostrar algunos de los servicios");
-								banderaOpcionUno=1;
 								break;
 						}
 					}
@@ -114,7 +109,6 @@ int main(void) {
 				case 4:
 					if(banderaOpcionUno)
 					{
-						banderaOpcionCuatro =1;
 						switch(Controller_FiltrarPorTipo(listaServicios))
 						{
 							case 0:
@@ -129,11 +123,10 @@ int main(void) {
 								printf("\n\nAlgunos pasajeros no se pudieron guardar");
 								break;
 						}
-
 					}
 					else
 					{
-
+						printf("\n\nNo pueden filtrar los pasajeros por que no hay ni uno");
 					}
 					break;
 

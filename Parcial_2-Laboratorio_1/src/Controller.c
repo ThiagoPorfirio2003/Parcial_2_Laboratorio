@@ -18,9 +18,13 @@
 #define MAXIMA_OPCION_FILTRACION 3
 #define MAXIMA_OPCION_FILTRACION_CIFRAS 1
 
+#define MINIMA_OPCION_ABRIR_ARCHIVO 1
+#define MAXIMA_OPCION_ABRIR_ARCHIVO 4
+#define MAXIMA_OPCION_ABRIR_ARCHIVO_CIFRAS 1
+
 #define CANTIDAD_CARACTERES_NOMBRE_ARCHIVO_ALMACENADOR 20
 
-int Controller_loadFromText(LinkedList* this, int mostrarPasajero)
+int Controller_loadFromText(LinkedList* this)
 {
 	int retorno;
 	int archivoAUsar;
@@ -29,20 +33,32 @@ int Controller_loadFromText(LinkedList* this, int mostrarPasajero)
 
 	retorno =1;
 
-	if(this != NULL && (mostrarPasajero == 0 || mostrarPasajero == 1))
+	if(this != NULL)
 	{
-		if(!utn_GetIntRango(&archivoAUsar, "\nArchivos a abrir:\n 1- Todos los servicios\nElija una opcion: ", "El dato ingresado es invalido. Elija una opcion correcta", 1, 1, 1))
+		if(!utn_GetIntRango(&archivoAUsar, "\nArchivos a abrir:\n 1- Todos los servicios\n 2- Minoristas\n 3- Mayoristas\n 4- Exportadores\nElija una opcion: ", "El dato ingresado es invalido. Elija una opcion correcta: ", MINIMA_OPCION_ABRIR_ARCHIVO, MAXIMA_OPCION_ABRIR_ARCHIVO, MAXIMA_OPCION_ABRIR_ARCHIVO_CIFRAS))
 		{
 			switch(archivoAUsar)
 			{
 				case 1:
 					strcpy(nombreDelArchivo, "data.csv");
 					break;
+
+				case 2:
+					strcpy(nombreDelArchivo, "data_minorista.csv");
+					break;
+
+				case 3:
+					strcpy(nombreDelArchivo, "data_mayorista.csv");
+					break;
+
+				case 4:
+					strcpy(nombreDelArchivo, "data_exportador.csv");
+					break;
 			}
 
 			pFile = fopen(nombreDelArchivo, "r");
 
-			retorno = parser_ServiciosFromText(pFile, this, mostrarPasajero);
+			retorno = parser_ServiciosFromText(pFile, this);
 
 			while(!fclose(pFile));
 
@@ -150,6 +166,7 @@ int Controller_FiltrarPorTipo(LinkedList* this)
 			listaFiltrada = ll_filter(this, pFuncFiltradora);
 
 			pFile = fopen(nombreArchivoAlmacenador, "w");
+
 
 			retorno = Servicios_SaveTxt(pFile, listaFiltrada, 1);
 

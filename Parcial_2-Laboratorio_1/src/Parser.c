@@ -12,7 +12,7 @@
 #define CANTIDAD_CARACTERES_CANTIDAD 20
 #define CANTIDAD_CARACTERES_TOTAL_SERVICIO 50
 
-int parser_ServiciosFromText(FILE* pFile , LinkedList* pArrayListServicios, int mostrarPasajero)
+int parser_ServiciosFromText(FILE* pFile , LinkedList* pArrayListServicios)
 {
 	int retorno;
 	char id_ServicioCaracter[CANTIDAD_CARACTERES_ID_SERVICIO];
@@ -27,7 +27,7 @@ int parser_ServiciosFromText(FILE* pFile , LinkedList* pArrayListServicios, int 
 
 	retorno=1;
 
-	if(pFile != NULL && pArrayListServicios != NULL  && (mostrarPasajero == 1 || mostrarPasajero==0))
+	if(pFile != NULL && pArrayListServicios != NULL)
 	{
 		retorno=0;
 		fscanf(pFile,"%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]\n", id_ServicioCaracter, descripcionCaracter, tipoCaracter, precioUnitarioCaracter, cantidadCaracter, totalServicioCaracter);
