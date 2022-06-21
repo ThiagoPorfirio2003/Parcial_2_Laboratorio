@@ -401,4 +401,112 @@ int Servicios_MostrarUnServicio(eServicios* this)
     return retorno;
 }
 
+void Servicios_CalcularPrecioTotal(void* peServicios)
+{
+	eServicios* pServiciosAuxiliar;
 
+	if(peServicios != NULL)
+	{
+		pServiciosAuxiliar = ((eServicios*)peServicios);
+		pServiciosAuxiliar->totalServicio = pServiciosAuxiliar->cantidad * pServiciosAuxiliar->precioUnitario;
+	}
+}
+
+int Servicios_FiltrarPorMinorista(void* peServicios)
+{
+	int retorno;
+	eServicios* pServicioAuxiliar;
+
+	retorno=0;
+
+	if(peServicios != NULL)
+	{
+		pServicioAuxiliar = (eServicios*) peServicios;
+
+		if(pServicioAuxiliar->tipo == 1)
+		{
+			retorno =1;
+		}
+	}
+	return retorno;
+}
+
+int Servicios_FiltrarPorMayorista(void* peServicios)
+{
+	int retorno;
+	eServicios* pServicioAuxiliar;
+
+	retorno=0;
+
+	if(peServicios != NULL)
+	{
+		pServicioAuxiliar = (eServicios*) peServicios;
+
+		if(pServicioAuxiliar->tipo == 2)
+		{
+			retorno =1;
+		}
+	}
+	return retorno;
+}
+
+int Servicios_FiltrarPorExportador(void* peServicios)
+{
+	int retorno;
+	eServicios* pServicioAuxiliar;
+
+	retorno=0;
+
+	if(peServicios != NULL)
+	{
+		pServicioAuxiliar = (eServicios*) peServicios;
+
+		if(pServicioAuxiliar->tipo == 3)
+		{
+			retorno =1;
+		}
+	}
+	return retorno;
+}
+
+int Servicios_SaveTxt(FILE* pFile, LinkedList* listaServicios, int guardarEncabezado)
+{
+	int retorno;
+	int cantidadServicios;
+	int id;
+	char descripcion[CANTIDAD_CARACTERES_DESCRIPCION_SERVICIO];
+	int tipo;
+	float precioUnitario;
+	int cantidad;
+	float totalServicio;
+
+	eServicios* pServicioAGuardar;
+
+	pServicioAGuardar = NULL;
+	retorno=1;
+
+	if(pFile != NULL && listaServicios != NULL  && (guardarEncabezado == 1 || guardarEncabezado==0))
+	{
+		retorno=0;
+		if(guardarEncabezado)
+		{
+			fprintf(pFile,"id_servicio,descripcion,tipo,precioUnitario,cantidad,totalServicio\n");
+		}
+		cantidadServicios = ll_len(listaServicios);
+
+		for(int i=0; i<cantidadServicios; i++)
+		{
+			pServicioAGuardar = (eServicios*) ll_get(listaServicios,i);
+			if(Servicios_getAll(pServicioAGuardar, &id, descripcion, &tipo, &precioUnitario, &cantidad, &totalServicio))
+			{
+				retorno =2;
+			}
+			else
+			{
+				fprintf(pFile,"%d,%s,%d,%.2f,%d,%.2f\n", id, descripcion, tipo, precioUnitario, cantidad, totalServicio);
+			}
+		}
+	}
+
+    return retorno;
+}

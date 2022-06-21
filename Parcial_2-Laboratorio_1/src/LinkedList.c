@@ -245,7 +245,10 @@ int ll_remove(LinkedList* this,int index)
         	{
         		this->pFirstNode = pNodoAEliminar->pNextNode;
         	}
-        	free(pNodoAEliminar->pElement);
+        	if(pNodoAEliminar->pElement != NULL)
+        	{
+            	free(pNodoAEliminar->pElement);
+        	}
         	free(pNodoAEliminar);
         	this->size--;
         	returnAux=0;
@@ -606,25 +609,52 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 
 }
 
-/*Ejemplo de funcion fn
-void calcularPrecioFinal(Producto* p)
+LinkedList* ll_map(LinkedList* this, void (*fn)(void* element))
 {
-    if(p != NULL)
-    {
-        p->precioFinal = p->precioUnitario*p->cantidad;
-    }
-return;
+	int tamanioThis;
+
+	if(this != NULL && fn != NULL)
+	{
+		tamanioThis = ll_len(this);
+
+		for(int i=0; i<tamanioThis;i++)
+		{
+			fn(ll_get(this,i));
+		}
+	}
+	return this;
 }
 
-Obvio que usando los getters y setters
+LinkedList* ll_filter(LinkedList* this, int(*fn)(void*))
+{
+	int tamanioThis;
+	LinkedList* listaFiltrada;
+	void* pElemento;
 
- * Completa un campo del elemento, recibiendo como parámetro
- * la función que sera la encargada de calcular el valor de ese campo.
- * Verificando que tanto el puntero this como el puntero a la funcion
- * fn sean distintos de NULL. Retorna la lista completa.
- * *
- * LinkedList* ll_map(LinkedList* this, void (*fn)(void* element))
- */
+	listaFiltrada=NULL;
+	pElemento =NULL;
+
+	if(this != NULL && fn != NULL)
+	{
+		listaFiltrada = ll_newLinkedList();
+		if(listaFiltrada != NULL)
+		{
+			tamanioThis = ll_len(this);
+
+			for(int i=0;i<tamanioThis; i++)
+			{
+				pElemento = ll_get(this, i);
+				if(fn(pElemento))
+				{
+					ll_add(listaFiltrada, pElemento);
+				}
+			}
+		}
+	}
+
+	return listaFiltrada;
+}
+
 
 /* Filtra la lista con una condición, recibiendo como parámetro
  * la función que sera la encargada de decidir si cada elemento
