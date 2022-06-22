@@ -53,11 +53,12 @@ int Servicios_verificarYTransfomarTipoIntAString(char* tipoString, int tipoNumer
 
 int Servicios_MostrarUnServicio(eServicios* this);
 
-void Servicios_CalcularPrecioTotal(void* peServicios)
-;
+void Servicios_CalcularPrecioTotal(void* peServicios);
+
 int Servicios_FiltrarPorMinorista(void* peServicios);
 int Servicios_FiltrarPorMayorista(void* peServicios);
 int Servicios_FiltrarPorExportador(void* peServicios);
 
 int Servicios_SaveTxt(FILE* pFile, LinkedList* listaServicios, int guardarEncabezado);
 
+int Servicios_OrdernarPorDescripcion(void* pPrimerServicio, void* pSegundoServicio);

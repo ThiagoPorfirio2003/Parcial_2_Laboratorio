@@ -39,7 +39,7 @@ int main(void) {
 			switch(opcionMenu)
 			{
 				case 1:
-					if(banderaOpcionUno && !utn_GetIntRango(&opcionReCargarDatos, "\nSi queres volver a cargar los datos, todos los no guardados se perderan. Elije 1 para aceptar o 0 para cancelar: ", "El dato ingresado es invalido. Elije 1 para aceptar o 0 para cancelar:  ", 0, 1, 1))
+					if(banderaOpcionUno && !utn_GetIntRango(&opcionReCargarDatos, "\nSi queres volver a cargar los datos, todos los no guardados se perderan. Elije 1 para aceptar o 0 para cancelar: ", "El dato ingresado es invalido. Elije 1 para aceptar o 0 para cancelar:  ", 0, 1, 1) && opcionReCargarDatos)
 					{
 						ll_clear(listaServicios);
 					}
@@ -86,7 +86,7 @@ int main(void) {
 					}
 					else
 					{
-						printf("\n\nNo se pueden mostrar los servicios porque no se cargo ninguno");
+						printf("\n\nNo se puede acceder a esta opcion porque todavia no hay ningun servicio cargado");
 					}
 					break;
 
@@ -99,10 +99,14 @@ int main(void) {
 						{
 							printf("\n\nNo se pueden asignar los totales debido a que la lista elejida no tiene servicios");
 						}
+						else
+						{
+							printf("\n\nLa asignacion de totales se realizo con exito");
+						}
 					}
 					else
 					{
-						printf("\n\nNo se pueden asignar los totales debido a que no se cargo ningun servicio");
+						printf("\n\nNo se puede acceder a esta opcion porque todavia no hay ningun servicio cargado");
 					}
 					break;
 
@@ -126,14 +130,38 @@ int main(void) {
 					}
 					else
 					{
-						printf("\n\nNo pueden filtrar los pasajeros por que no hay ni uno");
+						printf("\n\nNo se puede acceder a esta opcion porque todavia no hay ningun servicio cargado");
 					}
 					break;
 
 				case 5:
+					if(banderaOpcionUno)
+					{
+						if(Controller_SortPorDescripcion(listaServicios))
+						{
+							printf("\n\nHa ocurrido un error en el ordamiento");
+						}
+						else
+						{
+							printf("\n\nSe ordenaron con exito los servicios");
+						}
+
+					}
+					else
+					{
+						printf("\n\nNo se puede acceder a esta opcion porque todavia no hay ningun servicio cargado");
+					}
 					break;
 
 				case 6:
+					if(banderaOpcionUno)
+					{
+
+					}
+					else
+					{
+						printf("\n\nNo se puede acceder a esta opcion porque todavia no hay ningun servicio cargado");
+					}
 					break;
 
 				case 7:

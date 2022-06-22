@@ -510,3 +510,23 @@ int Servicios_SaveTxt(FILE* pFile, LinkedList* listaServicios, int guardarEncabe
 
     return retorno;
 }
+
+int Servicios_OrdernarPorDescripcion(void* pPrimerServicio, void* pSegundoServicio)
+{
+	int retorno;
+
+	retorno=0;
+
+	if(pPrimerServicio != NULL && pSegundoServicio != NULL)
+	{
+		retorno = strcmp((((eServicios*)pPrimerServicio)->descripcion), (((eServicios*)pSegundoServicio)->descripcion));
+	}
+
+	return retorno;
+}
+
+
+
+
+
+
