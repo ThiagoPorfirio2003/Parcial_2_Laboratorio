@@ -16,10 +16,14 @@ int main(void) {
 	LinkedList* listaServicios;
 	int opcionMenu;
 	int banderaOpcionUno;
+	int banderaOpcionSeis;
 	int opcionReCargarDatos;
+	int quedarseEnPrograma;
 
 	banderaOpcionUno = 0;
+	banderaOpcionSeis =0;
 	opcionReCargarDatos =0;
+	quedarseEnPrograma=1;
 
 	listaServicios = ll_newLinkedList();
 
@@ -46,7 +50,7 @@ int main(void) {
 
 					if(opcionReCargarDatos || !banderaOpcionUno)
 					{
-						switch(Controller_loadFromText(listaServicios))
+						switch(controller_AbrirArchivo(listaServicios))
 						{
 							case 0:
 								printf("\n\nSe cargaron con exito todos los Servicios");
@@ -146,6 +150,21 @@ int main(void) {
 							printf("\n\nSe ordenaron con exito los servicios");
 						}
 
+						switch(Controller_ListServicios(listaServicios))
+						{
+							case 0:
+								printf("\n\nSe mostraron con exito todos los Servicios");
+								break;
+
+							case 1:
+								printf("\n\nNo se pudieron listar los servicio");
+								break;
+
+							case 2:
+								printf("\n\nNo se pudieron mostrar algunos de los servicios");
+								break;
+						}
+
 					}
 					else
 					{
@@ -156,7 +175,21 @@ int main(void) {
 				case 6:
 					if(banderaOpcionUno)
 					{
+						switch(Controller_SaveTxt(listaServicios, "data.csv"))
+						{
+							case 0:
+								printf("\n\nSe guardaron con exito todos los servicios ");
+								break;
 
+							case 1:
+								printf("\n\nNo se pudieron guardar los archivo debido a que el puntero es nulo");
+								break;
+
+							case 2:
+								printf("\n\nAlgunos servicios no se pudieron guardar");
+								break;
+						}
+						banderaOpcionSeis=1;
 					}
 					else
 					{
@@ -165,11 +198,21 @@ int main(void) {
 					break;
 
 				case 7:
+					if(banderaOpcionSeis)
+					{
+						quedarseEnPrograma=0;
+						printf("\n\nSaliendo...\n\n");
+						while(ll_deleteLinkedList(listaServicios));
+					}
+					else
+					{
+						printf("\n\nNO PUEDE salir del programa sin antes haber guardado el archivo\n\n");
+					}
 					break;
 			}
 			printf("\n\n");
 		}
-	}while(opcionMenu != 7);
+	}while(quedarseEnPrograma);
 
 	return EXIT_SUCCESS;
 }

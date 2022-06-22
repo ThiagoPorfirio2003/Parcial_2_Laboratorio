@@ -325,6 +325,26 @@ int static getNombre(char* direccionPalabra, int cantidadDeCaracteres)
 	return retorno;
 }
 
+
+int static getCadenaCaracteres(char* direccionPalabra, int cantidadDeCaracteres)
+{
+	int retorno;
+	char* bufferPalabra;
+
+	retorno=1;
+
+	if(direccionPalabra!=NULL && cantidadDeCaracteres>2 && !memoria_NewCharConTamanio(&bufferPalabra, cantidadDeCaracteres))
+	{
+		if(!myGets(bufferPalabra, cantidadDeCaracteres))
+		{
+			retorno=0;
+			strncpy(direccionPalabra, bufferPalabra, cantidadDeCaracteres);
+		}
+		free(bufferPalabra);
+	}
+	return retorno;
+}
+
 int static getCadenaAlfanumerica(char* direccionCadena, int cantidadDeCaracteres)
 {
 	int retorno;
@@ -511,6 +531,37 @@ int utn_GetCadenaAlfanumericaRango(char* direccionCadenaAlfanumerica, char* mens
 		}
 		utn_CorregirNombre(bufferAuxiliar);
 		strcpy(direccionCadenaAlfanumerica, bufferAuxiliar);
+		retorno =0;
+		free(bufferAuxiliar);
+	}
+	return retorno;
+}
+
+
+int utn_GetCadenaCaracteres(char* direccionPalabra, char* mensaje, char* mensajeError, char* mensajeErrorNull, int cantidadMinimaCaracteres, int cantidadMaximaCaracteres, int cantidadDeCaracteres)
+{
+	int retorno;
+	char* bufferAuxiliar;
+
+	retorno =1;
+
+	if(direccionPalabra != NULL &&
+			mensaje != NULL &&
+			mensajeError !=NULL &&
+			cantidadMinimaCaracteres > 0 &&
+			cantidadMaximaCaracteres > 0 &&
+			cantidadMaximaCaracteres <= cantidadDeCaracteres &&
+			cantidadMaximaCaracteres >= cantidadMinimaCaracteres &&
+			!memoria_NewCharConTamanio(&bufferAuxiliar, cantidadDeCaracteres))
+	{
+		printf("%s", mensaje);
+		while(getCadenaCaracteres(bufferAuxiliar, cantidadDeCaracteres) ||
+				strlen(bufferAuxiliar) < cantidadMinimaCaracteres ||
+				strlen(bufferAuxiliar) > cantidadMaximaCaracteres)
+		{
+			printf("%s", mensajeError);
+		}
+		strcpy(direccionPalabra, bufferAuxiliar);
 		retorno =0;
 		free(bufferAuxiliar);
 	}

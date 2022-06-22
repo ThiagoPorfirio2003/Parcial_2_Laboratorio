@@ -7,6 +7,7 @@
 #include "LinkedList.h"
 #include "utn.h"
 
+
 #define CANTIDAD_CARACTERES_DESCRIPCION_SERVICIO 50
 #define CANTIDAD_CARACTERES_ID_SERVICIO 15
 #define CANTIDAD_CARACTERES_TIPO 20
@@ -18,115 +19,79 @@
 #define MAXIMA_OPCION_FILTRACION 3
 #define MAXIMA_OPCION_FILTRACION_CIFRAS 1
 
-#define MINIMA_OPCION_ABRIR_ARCHIVO 1
-#define MAXIMA_OPCION_ABRIR_ARCHIVO 4
-#define MAXIMA_OPCION_ABRIR_ARCHIVO_CIFRAS 1
-
-#define MINIMA_OPCION_GUARDAR_ARCHIVO 1
-#define MAXIMA_OPCION_GUARDAR_ARCHIVO 4
+#define NOMBRE_ARCHIVO_SERVICIOS "data.csv"
+#define NOMBRE_ARCHIVO_SERVICIOS_FILTRADO "data_filtrado.csv"
 
 #define CANTIDAD_CARACTERES_NOMBRE_ARCHIVO_ALMACENADOR 20
 
-
-int static Controller_getFileName(int opcionArchivo, char* nombreArchivo)
+int Controller_loadFromText(LinkedList* this, char* nombreArchivo)
 {
 	int retorno;
+	FILE* pFile;
 
 	retorno =1;
 
-	if(nombreArchivo != NULL)
+	if(this != NULL && nombreArchivo != NULL)
 	{
 		retorno =0;
-		switch(opcionArchivo)
-		{
-			case 1:
-				strcpy(nombreArchivo, "data_minorista.csv");
-				break;
 
-			case 2:
-				strcpy(nombreArchivo, "data_mayorista.csv");
-				break;
+		pFile = fopen(nombreArchivo, "r");
 
-			case 3:
-				strcpy(nombreArchivo, "data_exportador.csv");
-				break;
+		retorno = parser_ServiciosFromText(pFile, this);
 
-			case 4:
-				strcpy(nombreArchivo, "data.csv");
-				break;
+		while(!fclose(pFile));
 
-			default:
-				retorno =1;
-				break;
-		}
 	}
+
 	return retorno;
 }
 
-int static Controller_choseFile(char* nombreArchivo, char* mensaje, char* mensajeError, int minimaOpcionArchivo, int maximaOpcionArchivo, int maximaOpcionAbrirArchivoCifras)
-{
-	int retorno;
-	int opcionArchivo;
-
-	retorno =1;
-
-	if(nombreArchivo != NULL && mensaje != NULL && mensajeError != NULL && maximaOpcionAbrirArchivoCifras>0 && minimaOpcionArchivo<=maximaOpcionArchivo)
-	{
-		if(!utn_GetIntRango(&opcionArchivo, mensaje, mensajeError, minimaOpcionArchivo, maximaOpcionArchivo, MAXIMA_OPCION_ABRIR_ARCHIVO_CIFRAS))
-		{
-			retorno =  Controller_getFileName(opcionArchivo, nombreArchivo);
-		}
-	}
-	return retorno;
-}
-
-int Controller_loadFromText(LinkedList* this)
+int controller_AbrirArchivo(LinkedList* this)
 {
 	int retorno;
 	char nombreDelArchivo[CANTIDAD_CARACTERES_NOMBRE_ARCHIVO_ALMACENADOR];
-	FILE* pFile;
 
 	retorno =1;
 
 	if(this != NULL)
 	{
-		if(!Controller_choseFile(nombreDelArchivo, "\nArchivos a abrir:\n 1- Minoristas\n 2- Mayoristas\n 3- Exportadores\n 4- Todos los servicios\nElija una opcion: ", "El dato ingresado es invalido. Elija una opcion correcta: ", MINIMA_OPCION_ABRIR_ARCHIVO, MAXIMA_OPCION_ABRIR_ARCHIVO, MAXIMA_OPCION_ABRIR_ARCHIVO_CIFRAS))
+		retorno = 0;
+		do{
+			if(utn_GetCadenaCaracteres(nombreDelArchivo, "\nIngrese el nombre del archivo: ", "El nombre ingresado es incorrecto, ingrese uno correcto: ", "\nNo se puede continuar con la operacion debido a un faltante de memoria", 1, CANTIDAD_CARACTERES_NOMBRE_ARCHIVO_ALMACENADOR, CANTIDAD_CARACTERES_NOMBRE_ARCHIVO_ALMACENADOR))
+			{
+				retorno =1;
+				break;
+			}
+		}while(strcmp(nombreDelArchivo, "data.csv") != 0);
+
+		if(retorno == 0)
 		{
-			pFile = fopen(nombreDelArchivo, "r");
-
-			retorno = parser_ServiciosFromText(pFile, this);
-
-			while(!fclose(pFile));
+			retorno = Controller_loadFromText(this, nombreDelArchivo);
 		}
 	}
 
 	return retorno;
 }
 
-int Controller_SaveTxt(LinkedList* this, int opcionArchivoAGuardar)
+
+int Controller_SaveTxt(LinkedList* this, char* nombreArchivo)
 {
 	int retorno;
 	FILE* pFile;
-	char nombreArchivoAlmacenador[CANTIDAD_CARACTERES_NOMBRE_ARCHIVO_ALMACENADOR];
 
 	retorno =1;
 	pFile= NULL;
 
-	if(this != NULL && opcionArchivoAGuardar > MINIMA_OPCION_GUARDAR_ARCHIVO -1 && opcionArchivoAGuardar < MAXIMA_OPCION_GUARDAR_ARCHIVO +1)
+	if(this != NULL && nombreArchivo != NULL)
 	{
-		if(!Controller_getFileName(opcionArchivoAGuardar, nombreArchivoAlmacenador))
-		{
-			pFile = fopen(nombreArchivoAlmacenador, "w");
+		pFile = fopen(nombreArchivo, "w");
 
-			retorno = Servicios_SaveTxt(pFile, this, 1);
+		retorno = Servicios_SaveTxt(pFile, this, 1);
 
-			while(!fclose(pFile));
-		}
+		while(!fclose(pFile));
 	}
-
 	return retorno;
 }
-
 
 int Controller_ListServicios(LinkedList* this)
 {
@@ -220,7 +185,7 @@ int Controller_FiltrarPorTipo(LinkedList* this)
 			}
 			listaFiltrada = ll_filter(this, pFuncFiltradora);
 
-			retorno = Controller_SaveTxt(listaFiltrada, opcionFiltracion);
+			retorno = Controller_SaveTxt(listaFiltrada, NOMBRE_ARCHIVO_SERVICIOS_FILTRADO);
 		}
 	}
 	return retorno;

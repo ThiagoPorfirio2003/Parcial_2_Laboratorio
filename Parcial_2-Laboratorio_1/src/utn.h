@@ -187,5 +187,6 @@ int utn_GetNombreRango(char* direccionPalabra, char* mensaje, char* mensajeError
 /// - Tener espacio en memoria suficiente
 int utn_GetCadenaAlfanumericaRango(char* direccionCadenaAlfanumerica, char* mensaje, char* mensajeError, char* mensajeErrorNull, int cantidadMinimaCaracteres, int cantidadMaximaCaracteres, int cantidadDeCaracteres);
 
+int utn_GetCadenaCaracteres(char* direccionPalabra, char* mensaje, char* mensajeError, char* mensajeErrorNull, int cantidadMinimaCaracteres, int cantidadMaximaCaracteres, int cantidadDeCaracteres);
 
 #endif /* UTN_H_ */

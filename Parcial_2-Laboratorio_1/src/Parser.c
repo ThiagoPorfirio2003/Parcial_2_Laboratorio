@@ -12,6 +12,8 @@
 #define CANTIDAD_CARACTERES_CANTIDAD 20
 #define CANTIDAD_CARACTERES_TOTAL_SERVICIO 50
 
+#define CANTIDAD_CARACTERES_NOMBRE_ARCHIVO 20
+
 int parser_ServiciosFromText(FILE* pFile , LinkedList* pArrayListServicios)
 {
 	int retorno;
