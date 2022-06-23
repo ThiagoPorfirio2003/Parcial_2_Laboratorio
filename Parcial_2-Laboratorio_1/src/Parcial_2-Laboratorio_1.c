@@ -50,7 +50,7 @@ int main(void) {
 
 					if(opcionReCargarDatos || !banderaOpcionUno)
 					{
-						switch(controller_AbrirArchivo(listaServicios))
+						switch(controller_AbrirArchivoElejido(listaServicios))
 						{
 							case 0:
 								printf("\n\nSe cargaron con exito todos los Servicios");

@@ -477,7 +477,7 @@ int ll_containsAll(LinkedList* this,LinkedList* this2)
     	tamanioPrimerThis = ll_len(this);
     	tamanioSegundoThis = ll_len(this2);
 
-    	for(int i=0; i < tamanioPrimerThis || i < tamanioSegundoThis;i++)
+    	for(int i=0; i < tamanioPrimerThis && i < tamanioSegundoThis;i++)
     	{
     		if(!ll_contains(this, ll_get(this2,i)))
     		{
@@ -606,9 +606,13 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
     }
 
     return returnAux;
-
 }
 
+/* Completa un campo del elemento, recibiendo como parámetro
+* la función que sera la encargada de calcular el valor de ese campo.
+* Verificando que tanto el puntero this como el puntero a la funcion
+* fn sean distintos de NULL. Retorna la lista completa.
+*/
 LinkedList* ll_map(LinkedList* this, void (*fn)(void* element))
 {
 	int tamanioThis;
@@ -625,6 +629,12 @@ LinkedList* ll_map(LinkedList* this, void (*fn)(void* element))
 	return this;
 }
 
+/* Filtra la lista con una condición, recibiendo como parámetro
+ * la función que sera la encargada de decidir si cada elemento
+ * cumple la condición (1) o no (0) y si se agrega a una nueva lista filtrada.
+ * Verificando que tanto el puntero this como el puntero a la funcion
+ * fn sean distintos de NULL. Retorna la lista nueva lista filtrada.
+ */
 LinkedList* ll_filter(LinkedList* this, int(*fn)(void*))
 {
 	int tamanioThis;
@@ -655,12 +665,3 @@ LinkedList* ll_filter(LinkedList* this, int(*fn)(void*))
 	return listaFiltrada;
 }
 
-
-/* Filtra la lista con una condición, recibiendo como parámetro
- * la función que sera la encargada de decidir si cada elemento
- * cumple la condición (1) o no (0) y si se agrega a una nueva lista filtrada.
- * Verificando que tanto el puntero this como el puntero a la funcion
- * fn sean distintos de NULL. Retorna la lista nueva lista filtrada.
- *
-LinkedList* ll_filter(LinkedList* this, int(*fn)(void*));
-*/

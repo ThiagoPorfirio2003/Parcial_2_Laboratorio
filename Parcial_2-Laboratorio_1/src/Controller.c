@@ -46,7 +46,7 @@ int Controller_loadFromText(LinkedList* this, char* nombreArchivo)
 	return retorno;
 }
 
-int controller_AbrirArchivo(LinkedList* this)
+int controller_AbrirArchivoElejido(LinkedList* this)
 {
 	int retorno;
 	char nombreDelArchivo[CANTIDAD_CARACTERES_NOMBRE_ARCHIVO_ALMACENADOR];
@@ -72,7 +72,6 @@ int controller_AbrirArchivo(LinkedList* this)
 
 	return retorno;
 }
-
 
 int Controller_SaveTxt(LinkedList* this, char* nombreArchivo)
 {
